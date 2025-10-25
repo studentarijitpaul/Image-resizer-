@@ -1,5 +1,4 @@
 """
-image_resizer.py
 Resize single or multiple images with proper error handling.
 """
 
