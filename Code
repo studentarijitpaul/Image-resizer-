@@ -1,6 +1,63 @@
 """
-image_resizer.py
-Resize single or multiple images with proper error handling.
+# 🖼️ Image Resizer (Python)
+
+An advanced **Image Resizer tool** built using Python and Pillow (PIL).  
+It allows you to resize single or multiple images **while maintaining aspect ratio**,  
+with proper **error handling**, **batch processing**, and **custom output paths**.
+
+---
+
+## 🚀 Features
+✅ Resize single images or entire folders (batch mode)  
+✅ Maintain aspect ratio automatically  
+✅ Supports JPG, PNG, WEBP, BMP formats  
+✅ Create output folders automatically  
+✅ Clean error handling  
+✅ No external dependencies except Pillow  
+
+---
+
+## 🧰 Requirements
+Install the Pillow library:
+    pip install pillow
+
+---
+
+## ⚙️ How to Run
+
+### Single image
+    python image_resizer.py
+Then enter:
+    Choose mode (single/batch): single
+    Enter image path: test.jpg
+    Enter output path: resized/test_resized.jpg
+    Enter new width (or leave blank): 500
+    Enter new height (or leave blank):
+
+### Batch resize
+    python image_resizer.py
+Then enter:
+    Choose mode (single/batch): batch
+    Enter input folder: images/
+    Enter output folder: resized_images/
+    Enter new width (or leave blank):
+    Enter new height (or leave blank): 600
+
+---
+
+## 📁 Folder Structure
+ImageResizer/
+│
+├── image_resizer.py   # This file (contains code + README)
+└── resized_images/    # Output folder (auto-created)
+
+---
+
+## 👨‍💻 Author
+**Arijit Pal**  
+Python Developer | AI Enthusiast  
+📧 ap.dev.official@gmail.com  
+💬 "Tera bhai hai na tere saath 💪"
 """
 
 from PIL import Image
@@ -8,7 +65,7 @@ import os
 
 def resize_image(input_path: str, output_path: str, width: int = None, height: int = None):
     """
-    Resize an image to the given width or height (maintains aspect ratio if only one is provided).
+    Resize a single image to the given width/height while maintaining aspect ratio.
     """
     try:
         if not os.path.exists(input_path):
@@ -18,19 +75,18 @@ def resize_image(input_path: str, output_path: str, width: int = None, height: i
         original_width, original_height = img.size
 
         if width is None and height is None:
-            raise ValueError("You must provide width or height to resize.")
+            raise ValueError("⚠️ You must provide width or height to resize.")
 
         # Maintain aspect ratio
         if width and not height:
             ratio = width / float(original_width)
-            height = int((float(original_height) * float(ratio)))
+            height = int((float(original_height) * ratio))
         elif height and not width:
             ratio = height / float(original_height)
-            width = int((float(original_width) * float(ratio)))
+            width = int((float(original_width) * ratio))
 
         resized_img = img.resize((width, height), Image.Resampling.LANCZOS)
 
-        # Ensure output directory exists
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         resized_img.save(output_path)
 
